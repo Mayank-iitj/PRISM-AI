@@ -51,13 +51,13 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   };
 
   return (
-    <>
-      <button
-        onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 rounded bg-red-600 flex items-center justify-center text-white"
-      >
-        {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </button>
+      <>
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden fixed top-4 right-4 z-50 w-10 h-10 rounded bg-red-600 flex items-center justify-center text-white"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
 
       <AnimatePresence>
         {mobileOpen && (
