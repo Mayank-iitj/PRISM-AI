@@ -64,28 +64,28 @@ export function CleanRoomView() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-6"
+      className="space-y-4 md:space-y-6"
     >
       <motion.div variants={item} className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">Snowflake Data Clean Room</h2>
-          <p className="text-slate-400 mt-1">Execute pre-approved analytical queries across organisations</p>
+          <h2 className="text-xl md:text-2xl font-semibold text-white">Snowflake Data Clean Room</h2>
+          <p className="text-neutral-400 mt-1 text-sm md:text-base">Execute pre-approved analytical queries across organisations</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30">
-          <Lock className="w-4 h-4 text-purple-400" />
-          <span className="text-sm text-purple-400">Secure Environment</span>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30">
+          <Lock className="w-4 h-4 text-red-400" />
+          <span className="text-sm text-red-400">Secure Environment</span>
         </div>
       </motion.div>
 
       <motion.div variants={item} className="glass-panel rounded-xl p-4">
         <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-emerald-400">K-Anonymity ≥ 10 Enforced</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-500/10 border border-neutral-500/30">
+            <CheckCircle2 className="w-3.5 h-3.5 text-neutral-400" />
+            <span className="text-neutral-400">K-Anonymity ≥ 10 Enforced</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-            <Shield className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-cyan-400">Template-Only Queries</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30">
+            <Shield className="w-3.5 h-3.5 text-red-400" />
+            <span className="text-red-400">Template-Only Queries</span>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
             <FileText className="w-3.5 h-3.5 text-amber-400" />
@@ -94,10 +94,10 @@ export function CleanRoomView() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 md:p-6">
         <motion.div variants={item} className="space-y-4">
           <h3 className="font-semibold text-white flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <Sparkles className="w-4 h-4 text-red-400" />
             Approved Question Templates
           </h3>
           <div className="space-y-3">
@@ -107,9 +107,9 @@ export function CleanRoomView() {
                 onClick={() => setSelectedQuery(template.id)}
                 className={`w-full p-4 rounded-xl border text-left transition-all duration-200 ${
                   selectedQuery === template.id
-                    ? 'bg-slate-800/80 border-cyan-500/50 glow-cyan'
+                    ? 'bg-neutral-800/80 border-red-500/50 glow-red'
                     : template.approved
-                    ? 'bg-slate-800/30 border-slate-700/50 hover:border-slate-600/50'
+                    ? 'bg-neutral-800/30 border-neutral-700/50 hover:border-neutral-600/50'
                     : 'bg-red-500/5 border-red-500/20 opacity-60'
                 }`}
               >
@@ -117,7 +117,7 @@ export function CleanRoomView() {
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 rounded text-[10px] uppercase tracking-wider ${
                       template.category === 'risk' ? 'bg-red-500/20 text-red-400' :
-                      template.category === 'inclusion' ? 'bg-emerald-500/20 text-emerald-400' :
+                      template.category === 'inclusion' ? 'bg-neutral-500/20 text-neutral-400' :
                       'bg-amber-500/20 text-amber-400'
                     }`}>
                       {template.category}
@@ -125,12 +125,12 @@ export function CleanRoomView() {
                     <span className="font-medium text-white text-sm">{template.name}</span>
                   </div>
                   {template.approved ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-neutral-400" />
                   ) : (
                     <XCircle className="w-4 h-4 text-red-400" />
                   )}
                 </div>
-                <p className="text-xs text-slate-400 italic">&ldquo;{template.question}&rdquo;</p>
+                <p className="text-xs text-neutral-400 italic">&ldquo;{template.question}&rdquo;</p>
               </button>
             ))}
           </div>
@@ -138,7 +138,7 @@ export function CleanRoomView() {
 
         <motion.div variants={item} className="space-y-4">
           <h3 className="font-semibold text-white flex items-center gap-2">
-            <Code className="w-4 h-4 text-purple-400" />
+            <Code className="w-4 h-4 text-red-400" />
             Query Execution
           </h3>
           
@@ -151,32 +151,32 @@ export function CleanRoomView() {
                 exit={{ opacity: 0, y: -20 }}
                 className="glass-panel rounded-xl overflow-hidden"
               >
-                <div className="p-4 border-b border-slate-700/50">
+                <div className="p-4 border-b border-neutral-700/50">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-white">{selected.name}</h4>
                     <span className={`px-2 py-0.5 rounded text-xs ${
-                      selected.approved ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                      selected.approved ? 'bg-neutral-500/20 text-neutral-400' : 'bg-red-500/20 text-red-400'
                     }`}>
                       {selected.approved ? 'Approved' : 'Not Approved'}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-400">{selected.description}</p>
+                  <p className="text-sm text-neutral-400">{selected.description}</p>
                 </div>
 
-                <div className="p-4 bg-slate-900/50">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">SQL Template (Read Only)</p>
-                  <pre className="text-xs text-cyan-300 font-mono overflow-x-auto p-3 rounded bg-slate-950/50 border border-slate-700/50">
+                <div className="p-4 bg-neutral-900/50">
+                  <p className="text-[10px] text-neutral-500 uppercase tracking-wider mb-2">SQL Template (Read Only)</p>
+                  <pre className="text-xs text-red-300 font-mono overflow-x-auto p-3 rounded bg-neutral-950/50 border border-neutral-700/50">
                     {selected.sql_template}
                   </pre>
                 </div>
 
-                <div className="p-4 border-t border-slate-700/50">
+                <div className="p-4 border-t border-neutral-700/50">
                   <Button
                     onClick={() => executeQuery(selected.id)}
                     disabled={isExecuting}
                     className={`w-full ${
                       selected.approved 
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600' 
+                        ? 'bg-gradient-to-r from-red-500 to-red-500 hover:from-red-600 hover:to-red-600' 
                         : 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
                     }`}
                   >
@@ -204,14 +204,14 @@ export function CleanRoomView() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="border-t border-slate-700/50"
+                      className="border-t border-neutral-700/50"
                     >
-                      <div className={`p-4 ${queryResult.success ? 'bg-emerald-500/5' : 'bg-red-500/5'}`}>
+                      <div className={`p-4 ${queryResult.success ? 'bg-neutral-500/5' : 'bg-red-500/5'}`}>
                         <div className="flex items-center gap-2 mb-3">
                           {queryResult.success ? (
                             <>
-                              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                              <span className="font-medium text-emerald-400">Query Executed Successfully</span>
+                              <CheckCircle2 className="w-5 h-5 text-neutral-400" />
+                              <span className="font-medium text-neutral-400">Query Executed Successfully</span>
                             </>
                           ) : (
                             <>
@@ -223,19 +223,19 @@ export function CleanRoomView() {
                         
                         <div className={`p-4 rounded-lg border ${
                           queryResult.success 
-                            ? 'bg-slate-800/50 border-emerald-500/20' 
+                            ? 'bg-neutral-800/50 border-neutral-500/20' 
                             : 'bg-red-500/10 border-red-500/30'
                         }`}>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">
+                          <p className="text-[10px] text-neutral-500 uppercase tracking-wider mb-2">
                             {queryResult.success ? 'AI-Generated Insight' : 'Error Message'}
                           </p>
-                          <p className={`text-sm ${queryResult.success ? 'text-slate-300' : 'text-red-400'}`}>
+                          <p className={`text-sm ${queryResult.success ? 'text-neutral-300' : 'text-red-400'}`}>
                             {queryResult.insight}
                           </p>
                         </div>
 
                         {queryResult.success && (
-                          <div className="mt-3 flex items-center gap-4 text-xs text-slate-500">
+                          <div className="mt-3 flex items-center gap-4 text-xs text-neutral-500">
                             <span className="flex items-center gap-1">
                               <Clock className="w-3 h-3" /> Executed in 1.2s
                             </span>
@@ -258,31 +258,31 @@ export function CleanRoomView() {
                 animate={{ opacity: 1 }}
                 className="glass-panel rounded-xl p-12 text-center"
               >
-                <Lock className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                <p className="text-slate-400">Select a query template to view details and execute</p>
+                <Lock className="w-12 h-12 text-neutral-600 mx-auto mb-4" />
+                <p className="text-neutral-400">Select a query template to view details and execute</p>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
       </div>
 
-      <motion.div variants={item} className="glass-panel rounded-xl p-6">
+      <motion.div variants={item} className="glass-panel rounded-xl p-4 md:p-6">
         <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
           <AlertTriangle className="w-5 h-5 text-amber-400" />
           Clean Room Restrictions
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="p-4 rounded-lg bg-neutral-800/30 border border-neutral-700/50">
             <p className="text-sm font-medium text-white mb-2">No Ad-Hoc SQL</p>
-            <p className="text-xs text-slate-400">Only pre-approved query templates can be executed. Custom queries are blocked.</p>
+            <p className="text-xs text-neutral-400">Only pre-approved query templates can be executed. Custom queries are blocked.</p>
           </div>
-          <div className="p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
+          <div className="p-4 rounded-lg bg-neutral-800/30 border border-neutral-700/50">
             <p className="text-sm font-medium text-white mb-2">No Raw Row Access</p>
-            <p className="text-xs text-slate-400">Results are always aggregated. Individual record access is impossible.</p>
+            <p className="text-xs text-neutral-400">Results are always aggregated. Individual record access is impossible.</p>
           </div>
-          <div className="p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
+          <div className="p-4 rounded-lg bg-neutral-800/30 border border-neutral-700/50">
             <p className="text-sm font-medium text-white mb-2">Minimum Group Size</p>
-            <p className="text-xs text-slate-400">Results with fewer than 10 records are suppressed to prevent re-identification.</p>
+            <p className="text-xs text-neutral-400">Results with fewer than 10 records are suppressed to prevent re-identification.</p>
           </div>
         </div>
       </motion.div>

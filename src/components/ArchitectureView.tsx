@@ -92,7 +92,7 @@ export function ArchitectureView() {
 
             <div className="w-full lg:flex-1">
               <div className="p-4 md:p-6 rounded bg-gradient-to-br from-red-600/20 to-red-600/10 border border-red-600/30 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-red-600 border border-red-700">
+                <div className="absolute -top-3 left-1/2 -tranneutral-x-1/2 px-3 py-1 rounded-full bg-red-600 border border-red-700">
                   <span className="text-[10px] text-white uppercase tracking-wider font-medium">Clean Room</span>
                 </div>
                 <div className="flex flex-col items-center text-center mt-2">

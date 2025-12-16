@@ -45,7 +45,7 @@ const item = {
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number; color: string }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-xl">
+      <div className="bg-neutral-900 border border-neutral-700 rounded-lg p-3 shadow-xl">
         <p className="text-white font-medium mb-2">{label}</p>
         {payload.map((entry, index) => (
           <p key={index} className="text-xs" style={{ color: entry.color }}>
@@ -100,12 +100,12 @@ export function AnalyticsView() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-6"
+      className="space-y-4 md:space-y-6"
     >
       <motion.div variants={item} className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">Cross-Organisation Analytics</h2>
-          <p className="text-slate-400 mt-1">Privacy-preserving insights from aggregated data</p>
+          <h2 className="text-xl md:text-2xl font-semibold text-white">Cross-Organisation Analytics</h2>
+          <p className="text-neutral-400 mt-1 text-sm md:text-base">Privacy-preserving insights from aggregated data</p>
         </div>
       </motion.div>
 
@@ -146,12 +146,12 @@ export function AnalyticsView() {
 
       <motion.div variants={item}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="bg-slate-800/50 border border-slate-700/50">
+          <TabsList className="bg-neutral-800/50 border border-neutral-700/50">
             <TabsTrigger value="risk" className="data-[state=active]:bg-red-500/20 data-[state=active]:text-red-400">
               <AlertTriangle className="w-4 h-4 mr-2" />
               Risk Analysis
             </TabsTrigger>
-            <TabsTrigger value="inclusion" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400">
+            <TabsTrigger value="inclusion" className="data-[state=active]:bg-neutral-500/20 data-[state=active]:text-neutral-400">
               <Scale className="w-4 h-4 mr-2" />
               Inclusion Gaps
             </TabsTrigger>
@@ -161,9 +161,9 @@ export function AnalyticsView() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="risk" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="glass-panel rounded-xl p-6">
+          <TabsContent value="risk" className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 md:p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <BarChart3 className="w-4 h-4 text-red-400" />
                   Default Rate by Age Group & Region
@@ -176,16 +176,16 @@ export function AnalyticsView() {
                       <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Bar dataKey="default_rate_north" name="NORTH" fill="#29b6f6" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="default_rate_north" name="NORTH" fill="#dc2626" radius={[4, 4, 0, 0]} />
                       <Bar dataKey="default_rate_south" name="SOUTH" fill="#ef4444" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              <div className="glass-panel rounded-xl p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-purple-400" />
+                  <TrendingUp className="w-4 h-4 text-red-400" />
                   Combined Risk Score Distribution
                 </h3>
                 <div className="h-72">
@@ -196,23 +196,23 @@ export function AnalyticsView() {
                       <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Area type="monotone" dataKey="risk_score_north" name="NORTH Risk" fill="#8b5cf6" fillOpacity={0.2} stroke="#8b5cf6" />
+                      <Area type="monotone" dataKey="risk_score_north" name="NORTH Risk" fill="#ef4444" fillOpacity={0.2} stroke="#ef4444" />
                       <Area type="monotone" dataKey="risk_score_south" name="SOUTH Risk" fill="#ef4444" fillOpacity={0.2} stroke="#ef4444" />
-                      <Line type="monotone" dataKey="claim_frequency_north" name="NORTH Claims" stroke="#06b6d4" strokeWidth={2} dot={{ fill: '#06b6d4' }} />
-                      <Line type="monotone" dataKey="claim_frequency_south" name="SOUTH Claims" stroke="#f59e0b" strokeWidth={2} dot={{ fill: '#f59e0b' }} />
+                      <Line type="monotone" dataKey="claim_frequency_north" name="NORTH Claims" stroke="#dc2626" strokeWidth={2} dot={{ fill: '#dc2626' }} />
+                      <Line type="monotone" dataKey="claim_frequency_south" name="SOUTH Claims" stroke="#a3a3a3" strokeWidth={2} dot={{ fill: '#a3a3a3' }} />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
               </div>
             </div>
 
-            <div className="glass-panel rounded-xl p-6">
+            <div className="glass-panel rounded-xl p-4 md:p-6">
               <h3 className="font-semibold text-white mb-4">Key Insight</h3>
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-                <p className="text-sm text-slate-300">
+                <p className="text-sm text-neutral-300">
                   <span className="text-red-400 font-semibold">Age group 46-60</span> shows the highest combined default risk (0.38) and insurance claim frequency (0.64) in the SOUTH region. 
                   This demographic represents 20% of the combined customer base but accounts for 35% of high-risk indicators.
-                  <span className="block mt-2 text-slate-400 text-xs">
+                  <span className="block mt-2 text-neutral-400 text-xs">
                     Recommendation: Implement targeted risk-mitigation products rather than blanket credit denial.
                   </span>
                 </p>
@@ -220,11 +220,11 @@ export function AnalyticsView() {
             </div>
           </TabsContent>
 
-          <TabsContent value="inclusion" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="glass-panel rounded-xl p-6">
+          <TabsContent value="inclusion" className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 md:p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-emerald-400" />
+                  <Scale className="w-4 h-4 text-neutral-400" />
                   Risk vs Subsidy Coverage Quadrant
                 </h3>
                 <div className="h-72">
@@ -253,11 +253,11 @@ export function AnalyticsView() {
                           if (active && payload && payload.length) {
                             const data = payload[0].payload;
                             return (
-                              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-xl">
+                              <div className="bg-neutral-900 border border-neutral-700 rounded-lg p-3 shadow-xl">
                                 <p className="text-white font-medium">{data.name}</p>
-                                <p className="text-xs text-cyan-400">Risk: {(data.risk * 100).toFixed(1)}%</p>
-                                <p className="text-xs text-emerald-400">Subsidy: {(data.subsidy * 100).toFixed(1)}%</p>
-                                <p className="text-xs text-slate-400">Customers: {data.customers.toLocaleString()}</p>
+                                <p className="text-xs text-red-400">Risk: {(data.risk * 100).toFixed(1)}%</p>
+                                <p className="text-xs text-neutral-400">Subsidy: {(data.subsidy * 100).toFixed(1)}%</p>
+                                <p className="text-xs text-neutral-400">Customers: {data.customers.toLocaleString()}</p>
                               </div>
                             );
                           }
@@ -268,7 +268,7 @@ export function AnalyticsView() {
                         {inclusionData.map((entry, index) => (
                           <Cell 
                             key={`cell-${index}`} 
-                            fill={entry.risk > 0.5 && entry.subsidy < 0.5 ? '#ef4444' : entry.risk < 0.3 ? '#10b981' : '#f59e0b'} 
+                            fill={entry.risk > 0.5 && entry.subsidy < 0.5 ? '#ef4444' : entry.risk < 0.3 ? '#525252' : '#a3a3a3'} 
                           />
                         ))}
                       </Scatter>
@@ -278,11 +278,11 @@ export function AnalyticsView() {
                 <div className="mt-4 flex items-center justify-center gap-6 text-xs">
                   <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-red-500" /> High Risk, Low Coverage</span>
                   <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-amber-500" /> Moderate</span>
-                  <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-emerald-500" /> Low Risk</span>
+                  <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-neutral-500" /> Low Risk</span>
                 </div>
               </div>
 
-              <div className="glass-panel rounded-xl p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <Users className="w-4 h-4 text-amber-400" />
                   Subsidy Coverage by Age Group
@@ -295,21 +295,21 @@ export function AnalyticsView() {
                       <YAxis type="category" dataKey="age_group" tick={{ fill: '#94a3b8', fontSize: 12 }} width={60} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Bar dataKey="subsidy_coverage_north" name="NORTH Coverage" fill="#10b981" radius={[0, 4, 4, 0]} />
-                      <Bar dataKey="subsidy_coverage_south" name="SOUTH Coverage" fill="#06b6d4" radius={[0, 4, 4, 0]} />
+                      <Bar dataKey="subsidy_coverage_north" name="NORTH Coverage" fill="#525252" radius={[0, 4, 4, 0]} />
+                      <Bar dataKey="subsidy_coverage_south" name="SOUTH Coverage" fill="#dc2626" radius={[0, 4, 4, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </div>
             </div>
 
-            <div className="glass-panel rounded-xl p-6">
+            <div className="glass-panel rounded-xl p-4 md:p-6">
               <h3 className="font-semibold text-white mb-4">Inclusion Gap Alert</h3>
               <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                <p className="text-sm text-slate-300">
+                <p className="text-sm text-neutral-300">
                   <span className="text-amber-400 font-semibold">Critical Finding:</span> The 46-60 age group in the LOW income band shows a 78% gap in subsidy coverage 
                   despite having the highest risk indicators (0.85 risk score). Only 22% of this segment receives any subsidy support.
-                  <span className="block mt-2 text-slate-400 text-xs">
+                  <span className="block mt-2 text-neutral-400 text-xs">
                     Recommendation: Prioritize outreach programs and policy adjustments for this underserved demographic.
                   </span>
                 </p>
@@ -317,9 +317,9 @@ export function AnalyticsView() {
             </div>
           </TabsContent>
 
-          <TabsContent value="fraud" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="glass-panel rounded-xl p-6">
+          <TabsContent value="fraud" className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 md:p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <Target className="w-4 h-4 text-amber-400" />
                   Fraud Signal Trend by Region
@@ -332,14 +332,14 @@ export function AnalyticsView() {
                       <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Area type="monotone" dataKey="north" name="NORTH" stroke="#06b6d4" fill="#06b6d4" fillOpacity={0.3} />
+                      <Area type="monotone" dataKey="north" name="NORTH" stroke="#dc2626" fill="#dc2626" fillOpacity={0.3} />
                       <Area type="monotone" dataKey="south" name="SOUTH" stroke="#ef4444" fill="#ef4444" fillOpacity={0.3} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              <div className="glass-panel rounded-xl p-6">
+              <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-red-400" />
                   Fraud Rate by Age Group
@@ -352,21 +352,21 @@ export function AnalyticsView() {
                       <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={(v) => `${(v * 100).toFixed(0)}%`} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: 12 }} />
-                      <Bar dataKey="fraud_rate_north" name="NORTH Fraud" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="fraud_rate_south" name="SOUTH Fraud" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="fraud_rate_north" name="NORTH Fraud" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="fraud_rate_south" name="SOUTH Fraud" fill="#a3a3a3" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               </div>
             </div>
 
-            <div className="glass-panel rounded-xl p-6">
+            <div className="glass-panel rounded-xl p-4 md:p-6">
               <h3 className="font-semibold text-white mb-4">Fraud Convergence Analysis</h3>
-              <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                <p className="text-sm text-slate-300">
-                  <span className="text-purple-400 font-semibold">Pattern Detected:</span> The SOUTH region exhibits a 34% higher correlation between fraud indicators 
+              <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
+                <p className="text-sm text-neutral-300">
+                  <span className="text-red-400 font-semibold">Pattern Detected:</span> The SOUTH region exhibits a 34% higher correlation between fraud indicators 
                   and transaction anomalies compared to NORTH. Analysis suggests coordinated claim-transaction fraud concentrated in the 36-45 and 46-60 age groups.
-                  <span className="block mt-2 text-slate-400 text-xs">
+                  <span className="block mt-2 text-neutral-400 text-xs">
                     Recommendation: Enhanced cross-validation between banking and insurance claims for flagged segments.
                   </span>
                 </p>
@@ -390,18 +390,18 @@ function MetricCard({ icon, label, value, change, changeType, color }: {
   const colors = {
     red: 'from-red-500/20 to-red-500/5 border-red-500/30 text-red-400',
     amber: 'from-amber-500/20 to-amber-500/5 border-amber-500/30 text-amber-400',
-    purple: 'from-purple-500/20 to-purple-500/5 border-purple-500/30 text-purple-400',
-    cyan: 'from-cyan-500/20 to-cyan-500/5 border-cyan-500/30 text-cyan-400',
+    purple: 'from-red-500/20 to-red-500/5 border-red-500/30 text-red-400',
+    cyan: 'from-red-500/20 to-red-500/5 border-red-500/30 text-red-400',
   };
 
   return (
     <div className={`p-5 rounded-xl bg-gradient-to-br border ${colors[color]}`}>
       <div className="flex items-center gap-3 mb-3">
         {icon}
-        <span className="text-sm text-slate-300">{label}</span>
+        <span className="text-sm text-neutral-300">{label}</span>
       </div>
       <p className="text-3xl font-bold text-white mb-1">{value}</p>
-      <p className={`text-xs ${changeType === 'negative' ? 'text-red-400' : 'text-emerald-400'}`}>{change}</p>
+      <p className={`text-xs ${changeType === 'negative' ? 'text-red-400' : 'text-neutral-400'}`}>{change}</p>
     </div>
   );
 }

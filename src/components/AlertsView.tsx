@@ -43,8 +43,8 @@ export function AlertsView() {
       case 'critical': return 'bg-red-500/20 text-red-400 border-red-500/30';
       case 'high': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
       case 'medium': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-      case 'low': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+      case 'low': return 'bg-neutral-500/20 text-neutral-400 border-neutral-500/30';
+      default: return 'bg-neutral-500/20 text-neutral-400 border-neutral-500/30';
     }
   };
 
@@ -62,12 +62,12 @@ export function AlertsView() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-6"
+      className="space-y-4 md:space-y-6"
     >
       <motion.div variants={item} className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">Anomaly Alerts</h2>
-          <p className="text-slate-400 mt-1">Automated monitoring from Streams & Tasks</p>
+          <h2 className="text-xl md:text-2xl font-semibold text-white">Anomaly Alerts</h2>
+          <p className="text-neutral-400 mt-1 text-sm md:text-base">Automated monitoring from Streams & Tasks</p>
         </div>
         <div className="flex items-center gap-2">
           {activeAlerts.length > 0 && (
@@ -130,15 +130,15 @@ export function AlertsView() {
                         <span className={`px-2 py-0.5 rounded text-xs uppercase tracking-wider border ${getSeverityColor(alert.severity)}`}>
                           {alert.severity}
                         </span>
-                        <span className="text-xs text-slate-500 font-mono">
+                        <span className="text-xs text-neutral-500 font-mono">
                           {format(alert.timestamp, 'MMM dd, HH:mm')}
                         </span>
                       </div>
                       <p className="text-white mb-2">{alert.description}</p>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-500">Affected segments:</span>
+                        <span className="text-xs text-neutral-500">Affected segments:</span>
                         {alert.affected_segments.map((seg, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded bg-slate-700/50 text-xs text-slate-300">
+                          <span key={i} className="px-2 py-0.5 rounded bg-neutral-700/50 text-xs text-neutral-300">
                             {seg}
                           </span>
                         ))}
@@ -149,7 +149,7 @@ export function AlertsView() {
                     onClick={() => acknowledgeAlert(alert.id)}
                     variant="outline"
                     size="sm"
-                    className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                    className="border-neutral-500/30 text-neutral-400 hover:bg-neutral-500/10"
                   >
                     <CheckCircle2 className="w-4 h-4 mr-1" />
                     Acknowledge
@@ -163,39 +163,39 @@ export function AlertsView() {
 
       {activeAlerts.length === 0 && (
         <motion.div variants={item} className="glass-panel rounded-xl p-12 text-center">
-          <CheckCircle2 className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
+          <CheckCircle2 className="w-16 h-16 text-neutral-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">All Clear</h3>
-          <p className="text-slate-400">No active alerts. All anomaly checks passed.</p>
+          <p className="text-neutral-400">No active alerts. All anomaly checks passed.</p>
         </motion.div>
       )}
 
       {acknowledgedAlerts.length > 0 && (
         <motion.div variants={item} className="space-y-4">
           <h3 className="font-semibold text-white flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <CheckCircle2 className="w-5 h-5 text-neutral-400" />
             Acknowledged Alerts
           </h3>
           <div className="glass-panel rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-700/50 bg-slate-800/30">
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Time</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Type</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Severity</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Description</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase">Status</th>
+                <tr className="border-b border-neutral-700/50 bg-neutral-800/30">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase">Time</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase">Type</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase">Severity</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase">Description</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-700/30">
+              <tbody className="divide-y divide-neutral-700/30">
                 {acknowledgedAlerts.map((alert) => (
-                  <tr key={alert.id} className="hover:bg-slate-800/30 transition-colors opacity-60">
+                  <tr key={alert.id} className="hover:bg-neutral-800/30 transition-colors opacity-60">
                     <td className="px-4 py-3">
-                      <span className="text-slate-400 text-xs font-mono">
+                      <span className="text-neutral-400 text-xs font-mono">
                         {format(alert.timestamp, 'MMM dd, HH:mm')}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-slate-400 text-xs capitalize">
+                      <span className="text-neutral-400 text-xs capitalize">
                         {alert.type.replace('_', ' ')}
                       </span>
                     </td>
@@ -205,10 +205,10 @@ export function AlertsView() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-slate-400 text-xs">{alert.description.slice(0, 60)}...</span>
+                      <span className="text-neutral-400 text-xs">{alert.description.slice(0, 60)}...</span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="flex items-center gap-1 text-emerald-400 text-xs">
+                      <span className="flex items-center gap-1 text-neutral-400 text-xs">
                         <CheckCircle2 className="w-3 h-3" />
                         Resolved
                       </span>
@@ -221,12 +221,12 @@ export function AlertsView() {
         </motion.div>
       )}
 
-      <motion.div variants={item} className="glass-panel rounded-xl p-6">
+      <motion.div variants={item} className="glass-panel rounded-xl p-4 md:p-6">
         <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-cyan-400" />
+          <Clock className="w-5 h-5 text-red-400" />
           Automated Monitoring Schedule
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <ScheduleCard
             task="Aggregate Refresh"
             schedule="Daily at 00:00 UTC"
@@ -256,12 +256,12 @@ function StatCard({ label, value, color }: { label: string; value: string; color
     red: 'from-red-500/20 to-red-500/5 border-red-500/30 text-red-400',
     orange: 'from-orange-500/20 to-orange-500/5 border-orange-500/30 text-orange-400',
     amber: 'from-amber-500/20 to-amber-500/5 border-amber-500/30 text-amber-400',
-    emerald: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/30 text-emerald-400',
+    emerald: 'from-neutral-500/20 to-neutral-500/5 border-neutral-500/30 text-neutral-400',
   };
 
   return (
     <div className={`p-4 rounded-xl bg-gradient-to-br border ${colors[color]}`}>
-      <span className="text-xs text-slate-400">{label}</span>
+      <span className="text-xs text-neutral-400">{label}</span>
       <p className="text-2xl font-bold text-white mt-1">{value}</p>
     </div>
   );
@@ -274,17 +274,17 @@ function ScheduleCard({ task, schedule, lastRun, status }: {
   status: 'success' | 'running' | 'failed';
 }) {
   return (
-    <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+    <div className="p-4 rounded-lg bg-neutral-800/50 border border-neutral-700/50">
       <div className="flex items-center justify-between mb-2">
         <span className="font-medium text-white text-sm">{task}</span>
-        {status === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+        {status === 'success' && <CheckCircle2 className="w-4 h-4 text-neutral-400" />}
         {status === 'running' && (
-          <div className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
         )}
         {status === 'failed' && <XCircle className="w-4 h-4 text-red-400" />}
       </div>
-      <p className="text-xs text-slate-400">{schedule}</p>
-      <p className="text-xs text-slate-500 mt-1">Last run: {lastRun}</p>
+      <p className="text-xs text-neutral-400">{schedule}</p>
+      <p className="text-xs text-neutral-500 mt-1">Last run: {lastRun}</p>
     </div>
   );
 }
