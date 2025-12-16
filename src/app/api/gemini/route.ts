@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const systemPrompt = `You are PRISM-X AI, a privacy-preserving analytics assistant for a secure data clean room system.
 
