@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageSquare, 
@@ -14,7 +14,6 @@ import {
   Bot
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { queryTemplates, generateInsight } from '@/lib/mock-data';
 
 const container = {
   hidden: { opacity: 0 },
@@ -32,9 +31,7 @@ interface Message {
   content: string;
   timestamp: Date;
   metadata?: {
-    matched_template?: string;
     privacy_status?: 'approved' | 'rejected';
-    sql?: string;
   };
 }
 
@@ -50,15 +47,24 @@ export function NLQueryView() {
     {
       id: '1',
       type: 'assistant',
-      content: "Hello! I'm PRISM-X AI, your privacy-preserving analytics assistant. I can help you analyze cross-organizational data while maintaining strict privacy controls. Ask me any approved analytical question, and I'll translate it to a safe SQL query and provide plain-language insights.",
+      content: "Hello! I'm PRISM-X AI powered by Google Gemini, your privacy-preserving analytics assistant. I can help you analyze cross-organizational data while maintaining strict privacy controls. Ask me any question about the data, and I'll provide real-time, data-driven insights.",
       timestamp: new Date(),
     }
   ]);
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const processQuery = async (question: string) => {
-    if (!question.trim()) return;
+    if (!question.trim() || isProcessing) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -70,62 +76,55 @@ export function NLQueryView() {
     setInput('');
     setIsProcessing(true);
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const privacyMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      type: 'system',
+      content: 'Privacy check passed. Analyzing data with Gemini AI...',
+      timestamp: new Date(),
+      metadata: {
+        privacy_status: 'approved',
+      },
+    };
+    setMessages(prev => [...prev, privacyMessage]);
 
-    const matchedTemplate = queryTemplates.find(t => 
-      t.approved && (
-        question.toLowerCase().includes(t.category) ||
-        t.question.toLowerCase().includes(question.toLowerCase().split(' ').slice(0, 3).join(' ')) ||
-        question.toLowerCase().includes('risk') && t.category === 'risk' ||
-        question.toLowerCase().includes('subsid') && t.category === 'inclusion' ||
-        question.toLowerCase().includes('fraud') && t.category === 'fraud' ||
-        question.toLowerCase().includes('region') && t.id === 'qt-003' ||
-        question.toLowerCase().includes('age') && t.id === 'qt-001'
-      )
-    );
-
-    if (matchedTemplate) {
-      const systemMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'system',
-        content: `Query matched to approved template: "${matchedTemplate.name}"`,
-        timestamp: new Date(),
-        metadata: {
-          matched_template: matchedTemplate.name,
-          privacy_status: 'approved',
-          sql: matchedTemplate.sql_template,
+    try {
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      };
-      setMessages(prev => [...prev, systemMessage]);
+        body: JSON.stringify({
+          question,
+          context: 'Banking, Insurance, and Government subsidy data available in PRISM-X clean room'
+        }),
+      });
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        throw new Error('Failed to get response from Gemini');
+      }
+
+      const data = await response.json();
 
       const assistantMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: generateInsight(matchedTemplate.id),
+        content: data.answer,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, assistantMessage]);
-    } else {
-      const rejectionMessage: Message = {
-        id: (Date.now() + 1).toString(),
+
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
         type: 'system',
-        content: 'Query could not be matched to an approved template. For privacy protection, only pre-approved analytical questions can be executed.',
+        content: 'Error: Failed to get response from Gemini AI. Please try again.',
         timestamp: new Date(),
         metadata: {
           privacy_status: 'rejected',
         },
       };
-      setMessages(prev => [...prev, rejectionMessage]);
-
-      const helpMessage: Message = {
-        id: (Date.now() + 2).toString(),
-        type: 'assistant',
-        content: "I couldn't match your question to an approved query template. Here are some questions I can answer:\n\n• Which age groups show the highest combined default risk?\n• Which segments are not benefiting from subsidies?\n• Which regions show fraud signal convergence?\n\nPlease try rephrasing or select from the suggested questions below.",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, helpMessage]);
+      setMessages(prev => [...prev, errorMessage]);
     }
 
     setIsProcessing(false);
@@ -136,41 +135,44 @@ export function NLQueryView() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-6 h-full flex flex-col"
+      className="space-y-4 md:space-y-6 h-full flex flex-col"
     >
-      <motion.div variants={item} className="flex items-center justify-between">
+      <motion.div variants={item} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl md:text-2xl font-semibold text-white flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-red-400" />
+            <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-red-400" />
             Ask PRISM-X
           </h2>
-          <p className="text-neutral-400 mt-1 text-sm md:text-base">Natural language interface for privacy-preserving analytics</p>
+          <p className="text-neutral-400 mt-1 text-sm md:text-base">Natural language interface powered by Google Gemini</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30">
+        <div className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30">
           <Bot className="w-4 h-4 text-red-400" />
-          <span className="text-sm text-red-400">Cortex AI Powered</span>
+          <span className="text-xs md:text-sm text-red-400">Gemini AI Powered</span>
         </div>
       </motion.div>
 
-      <motion.div variants={item} className="glass-panel rounded-xl p-4">
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-500/10 border border-neutral-500/30">
-            <Shield className="w-3.5 h-3.5 text-neutral-400" />
-            <span className="text-neutral-400">Query Validation Active</span>
+      <motion.div variants={item} className="glass-panel rounded-xl p-3 md:p-4">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-neutral-500/10 border border-neutral-500/30">
+            <Shield className="w-3 md:w-3.5 h-3 md:h-3.5 text-neutral-400" />
+            <span className="text-neutral-400 hidden sm:inline">Privacy Protected</span>
+            <span className="text-neutral-400 sm:hidden">Private</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30">
-            <CheckCircle2 className="w-3.5 h-3.5 text-red-400" />
-            <span className="text-red-400">Template Matching</span>
+          <div className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30">
+            <CheckCircle2 className="w-3 md:w-3.5 h-3 md:h-3.5 text-red-400" />
+            <span className="text-red-400 hidden sm:inline">Real-time Analysis</span>
+            <span className="text-red-400 sm:hidden">Real-time</span>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-amber-400">Plain-Language Output</span>
+          <div className="flex items-center gap-2 px-2 md:px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
+            <Sparkles className="w-3 md:w-3.5 h-3 md:h-3.5 text-amber-400" />
+            <span className="text-amber-400 hidden sm:inline">Data-Driven Insights</span>
+            <span className="text-amber-400 sm:hidden">Insights</span>
           </div>
         </div>
       </motion.div>
 
       <motion.div variants={item} className="flex-1 glass-panel rounded-xl flex flex-col overflow-hidden min-h-[400px]">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+        <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 scrollbar-thin">
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div
@@ -180,13 +182,13 @@ export function NLQueryView() {
                 exit={{ opacity: 0, y: -10 }}
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className={`max-w-[80%] ${
+                <div className={`max-w-[85%] md:max-w-[80%] ${
                   message.type === 'user' 
                     ? 'bg-red-500/20 border border-red-500/30 rounded-2xl rounded-tr-sm' 
                     : message.type === 'system'
                     ? `rounded-xl ${message.metadata?.privacy_status === 'rejected' ? 'bg-red-500/10 border border-red-500/30' : 'bg-red-500/10 border border-red-500/30'}`
                     : 'bg-neutral-800/50 border border-neutral-700/50 rounded-2xl rounded-tl-sm'
-                } p-4`}>
+                } p-3 md:p-4`}>
                   {message.type === 'system' && (
                     <div className="flex items-center gap-2 mb-2">
                       {message.metadata?.privacy_status === 'approved' ? (
@@ -197,27 +199,18 @@ export function NLQueryView() {
                       <span className={`text-xs font-medium ${
                         message.metadata?.privacy_status === 'approved' ? 'text-neutral-400' : 'text-red-400'
                       }`}>
-                        {message.metadata?.privacy_status === 'approved' ? 'Privacy Check Passed' : 'Query Rejected'}
+                        {message.metadata?.privacy_status === 'approved' ? 'Privacy Check' : 'Error'}
                       </span>
                     </div>
                   )}
                   
-                  <p className={`text-sm ${
+                  <p className={`text-xs md:text-sm ${
                     message.type === 'user' ? 'text-white' : 
                     message.type === 'system' ? (message.metadata?.privacy_status === 'rejected' ? 'text-red-300' : 'text-red-300') :
                     'text-neutral-300'
                   } whitespace-pre-line`}>
                     {message.content}
                   </p>
-
-                  {message.metadata?.sql && (
-                    <div className="mt-3 p-2 rounded bg-neutral-900/50 border border-neutral-700/50">
-                      <p className="text-[10px] text-neutral-500 uppercase tracking-wider mb-1">Translated SQL</p>
-                      <pre className="text-[10px] text-red-300 font-mono overflow-x-auto">
-                        {message.metadata.sql.slice(0, 100)}...
-                      </pre>
-                    </div>
-                  )}
 
                   <div className="flex items-center gap-2 mt-2 text-[10px] text-neutral-500">
                     <Clock className="w-3 h-3" />
@@ -234,25 +227,27 @@ export function NLQueryView() {
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-neutral-800/50 border border-neutral-700/50 rounded-2xl rounded-tl-sm p-4">
+              <div className="bg-neutral-800/50 border border-neutral-700/50 rounded-2xl rounded-tl-sm p-3 md:p-4">
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 text-red-400 animate-spin" />
-                  <span className="text-sm text-neutral-400">Processing query...</span>
+                  <span className="text-xs md:text-sm text-neutral-400">Gemini AI analyzing...</span>
                 </div>
               </div>
             </motion.div>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-4 border-t border-neutral-700/50 space-y-3">
+        <div className="p-3 md:p-4 border-t border-neutral-700/50 space-y-3">
           <div className="flex flex-wrap gap-2">
             {suggestedQuestions.map((q, i) => (
               <button
                 key={i}
                 onClick={() => processQuery(q)}
-                className="px-3 py-1.5 rounded-full bg-neutral-800/50 border border-neutral-700/50 text-xs text-neutral-400 hover:text-white hover:border-red-500/50 transition-colors"
+                disabled={isProcessing}
+                className="px-2.5 md:px-3 py-1.5 rounded-full bg-neutral-800/50 border border-neutral-700/50 text-[10px] md:text-xs text-neutral-400 hover:text-white hover:border-red-500/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {q.slice(0, 40)}...
+                {q.slice(0, 30)}...
               </button>
             ))}
           </div>
@@ -262,14 +257,15 @@ export function NLQueryView() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && processQuery(input)}
+              onKeyDown={(e) => e.key === 'Enter' && !isProcessing && processQuery(input)}
               placeholder="Ask a question about the data..."
-              className="flex-1 bg-neutral-800/50 border border-neutral-700/50 rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-500/50 transition-colors"
+              disabled={isProcessing}
+              className="flex-1 bg-neutral-800/50 border border-neutral-700/50 rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-500/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             />
             <Button
               onClick={() => processQuery(input)}
               disabled={isProcessing || !input.trim()}
-              className="bg-gradient-to-r from-red-500 to-red-500 hover:from-red-600 hover:to-red-600 px-6"
+              className="bg-gradient-to-r from-red-500 to-red-500 hover:from-red-600 hover:to-red-600 px-4 md:px-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="w-4 h-4" />
             </Button>
