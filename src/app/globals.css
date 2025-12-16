@@ -49,47 +49,47 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: #030712;
-  --foreground: #f1f5f9;
-  --card: #0f172a;
-  --card-foreground: #f1f5f9;
-  --popover: #0f172a;
-  --popover-foreground: #f1f5f9;
-  --primary: #06b6d4;
-  --primary-foreground: #030712;
-  --secondary: #1e293b;
-  --secondary-foreground: #f1f5f9;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #0891b2;
-  --accent-foreground: #f1f5f9;
-  --destructive: #ef4444;
-  --border: rgba(148, 163, 184, 0.15);
-  --input: rgba(148, 163, 184, 0.2);
-  --ring: #06b6d4;
-  --chart-1: #06b6d4;
-  --chart-2: #10b981;
-  --chart-3: #f59e0b;
-  --chart-4: #8b5cf6;
-  --chart-5: #ef4444;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f1f5f9;
-  --sidebar-primary: #06b6d4;
-  --sidebar-primary-foreground: #030712;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: rgba(148, 163, 184, 0.1);
-  --sidebar-ring: #06b6d4;
+  --radius: 0.25rem;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #0a0a0a;
+  --popover-foreground: #ffffff;
+  --primary: #dc2626;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #737373;
+  --accent: #ef4444;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #dc2626;
+  --chart-1: #dc2626;
+  --chart-2: #ef4444;
+  --chart-3: #f87171;
+  --chart-4: #525252;
+  --chart-5: #a3a3a3;
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #dc2626;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #dc2626;
   
-  --prism-bank: #29b6f6;
-  --prism-insurance: #66bb6a;
-  --prism-government: #ffa726;
-  --prism-cleanroom: #ab47bc;
-  --prism-success: #10b981;
-  --prism-warning: #f59e0b;
-  --prism-danger: #ef4444;
-  --prism-info: #06b6d4;
+  --prism-bank: #dc2626;
+  --prism-insurance: #ef4444;
+  --prism-government: #f87171;
+  --prism-cleanroom: #dc2626;
+  --prism-success: #525252;
+  --prism-warning: #a3a3a3;
+  --prism-danger: #dc2626;
+  --prism-info: #ef4444;
 }
 
 @layer base {
