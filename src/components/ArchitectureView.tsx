@@ -79,18 +79,18 @@ export function ArchitectureView() {
               />
             </div>
 
-            <div className="hidden lg:flex flex-col items-center justify-center h-full py-8 flex-shrink-0">
-              <div className="flex-1 w-px bg-gradient-to-b from-transparent via-red-600/50 to-transparent" />
-              <div className="my-4 flex flex-col items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-red-600/20 flex items-center justify-center">
-                  <Lock className="w-4 h-4 text-red-600" />
+              <div className="hidden xl:flex flex-col items-center justify-center h-full py-8 flex-shrink-0">
+                <div className="flex-1 w-px bg-gradient-to-b from-transparent via-red-600/50 to-transparent" />
+                <div className="my-4 flex flex-col items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-red-600/20 flex items-center justify-center">
+                    <Lock className="w-4 h-4 text-red-600" />
+                  </div>
+                  <span className="text-[10px] text-red-600 uppercase tracking-wider">Secure Share</span>
                 </div>
-                <span className="text-[10px] text-red-600 uppercase tracking-wider">Secure Share</span>
+                <div className="flex-1 w-px bg-gradient-to-b from-transparent via-red-600/50 to-transparent" />
               </div>
-              <div className="flex-1 w-px bg-gradient-to-b from-transparent via-red-600/50 to-transparent" />
-            </div>
 
-            <div className="w-full lg:flex-1">
+              <div className="w-full xl:flex-1">
               <div className="p-4 md:p-6 rounded bg-gradient-to-br from-red-600/20 to-red-600/10 border border-red-600/30 relative">
                 <div className="absolute -top-3 left-1/2 -tranneutral-x-1/2 px-3 py-1 rounded-full bg-red-600 border border-red-700">
                   <span className="text-[10px] text-white uppercase tracking-wider font-medium">Clean Room</span>
