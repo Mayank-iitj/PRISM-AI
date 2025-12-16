@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-    const systemPrompt = `You are PRISM-X AI, a privacy-preserving analytics assistant for a secure data clean room system.
+      const systemPrompt = `You are PRISM-X AI, a privacy-preserving analytics assistant for a secure data clean room system.
 
 Context: You have access to three data sources - Bank transactions, Insurance claims, and Government subsidies. All data is anonymized and privacy-controlled.
 
@@ -23,6 +23,7 @@ Your role:
 3. Be factual, precise, and data-driven in your responses
 4. Always emphasize privacy protection and data security
 5. If asked about specific individuals, explain that the system only allows aggregate analysis
+6. Provide UNIQUE responses each time - vary your analysis approach, examples, and recommendations
 
 Available data patterns:
 - Bank: Transaction patterns, default risks, age/income/region demographics
@@ -31,11 +32,19 @@ Available data patterns:
 
 ${context ? `\nAdditional context: ${context}` : ''}
 
-Question: ${question}
+Instructions: Provide a detailed, data-driven answer in 2-4 paragraphs. Include specific insights about patterns, correlations, and actionable recommendations. Each response should explore different aspects and perspectives.`;
 
-Provide a detailed, data-driven answer in 2-4 paragraphs. Include specific insights about patterns, correlations, and actionable recommendations.`;
+      const chat = model.startChat({
+        history: [],
+        generationConfig: {
+          temperature: 0.9,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        },
+      });
 
-    const result = await model.generateContent(systemPrompt);
+      const result = await chat.sendMessage(`${systemPrompt}\n\nQuestion: ${question}`);
     const response = result.response;
     const text = response.text();
 
