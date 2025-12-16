@@ -39,21 +39,20 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen bg-[#030712] overflow-hidden">
+    <div className="flex h-screen bg-black overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 pointer-events-none" />
       
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
       
-      <main className="flex-1 overflow-hidden relative">
-        <div className="h-full overflow-y-auto p-6 scrollbar-thin">
+      <main className="flex-1 overflow-hidden relative lg:ml-0">
+        <div className="h-full overflow-y-auto p-4 md:p-6 lg:p-8 scrollbar-thin">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSection}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
             >
               {renderContent()}
             </motion.div>
