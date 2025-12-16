@@ -44,8 +44,8 @@ export default function Home() {
       
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
       
-      <main className="flex-1 overflow-hidden relative lg:ml-0">
-        <div className="h-full overflow-y-auto p-4 md:p-6 lg:p-8 scrollbar-thin">
+      <main className="flex-1 overflow-hidden relative">
+        <div className="h-full overflow-y-auto p-3 sm:p-4 md:p-6 lg:p-8 scrollbar-thin">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSection}
