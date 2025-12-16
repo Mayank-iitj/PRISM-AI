@@ -68,27 +68,27 @@ Instructions: Provide a detailed, data-driven answer in 2-4 paragraphs. Include 
       timestamp: new Date().toISOString() 
     });
 
-  } catch (error: unknown) {
-    console.error('RapidAPI error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    
-    if (errorMessage.includes('quota') || errorMessage.includes('429')) {
+    } catch (error: unknown) {
+      console.error('AIMLAPI error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      if (errorMessage.includes('quota') || errorMessage.includes('429')) {
+        return NextResponse.json({ 
+          error: 'API quota exceeded. Please check your AIMLAPI subscription.',
+          details: 'Visit your AIMLAPI dashboard to manage your quota.'
+        }, { status: 429 });
+      }
+      
+      if (errorMessage.includes('401') || errorMessage.includes('403')) {
+        return NextResponse.json({ 
+          error: 'Invalid API key. Please check your AIMLAPI credentials.',
+          details: errorMessage
+        }, { status: 401 });
+      }
+      
       return NextResponse.json({ 
-        error: 'API quota exceeded. Please check your RapidAPI subscription.',
-        details: 'Visit your RapidAPI dashboard to manage your quota.'
-      }, { status: 429 });
+        error: 'Failed to generate response', 
+        details: errorMessage 
+      }, { status: 500 });
     }
-    
-    if (errorMessage.includes('401') || errorMessage.includes('403')) {
-      return NextResponse.json({ 
-        error: 'Invalid API key. Please check your RapidAPI credentials.',
-        details: errorMessage
-      }, { status: 401 });
-    }
-    
-    return NextResponse.json({ 
-      error: 'Failed to generate response', 
-      details: errorMessage 
-    }, { status: 500 });
-  }
 }
