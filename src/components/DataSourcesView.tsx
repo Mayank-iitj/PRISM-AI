@@ -630,10 +630,10 @@ function AddModal({ fields, onSave, onClose }: any) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-neutral-900 border border-neutral-700 rounded-lg p-6 w-full max-w-md">
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-neutral-900 border border-neutral-700 rounded-lg p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white font-semibold">Add New Record</h3>
+          <h3 className="text-white font-semibold text-sm sm:text-base">Add New Record</h3>
           <button onClick={onClose} className="text-neutral-400 hover:text-white">
             <X className="w-4 h-4" />
           </button>

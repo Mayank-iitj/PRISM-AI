@@ -220,8 +220,8 @@ export function AnalyticsView() {
             </div>
           </TabsContent>
 
-          <TabsContent value="inclusion" className="space-y-4 md:space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 md:p-6">
+            <TabsContent value="inclusion" className="space-y-4 md:space-y-6">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:p-6">
               <div className="glass-panel rounded-xl p-4 md:p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <Scale className="w-4 h-4 text-neutral-400" />
