@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,9 +8,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
-
-      const systemPrompt = `You are PRISM-X AI, a privacy-preserving analytics assistant for a secure data clean room system.
+    const systemPrompt = `You are PRISM-X AI, a privacy-preserving analytics assistant for a secure data clean room system.
 
 Context: You have access to three data sources - Bank transactions, Insurance claims, and Government subsidies. All data is anonymized and privacy-controlled.
 
@@ -34,19 +29,39 @@ ${context ? `\nAdditional context: ${context}` : ''}
 
 Instructions: Provide a detailed, data-driven answer in 2-4 paragraphs. Include specific insights about patterns, correlations, and actionable recommendations. Each response should explore different aspects and perspectives.`;
 
-      const chat = model.startChat({
-        history: [],
-        generationConfig: {
-          temperature: 0.9,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
+    const data = {
+      messages: [
+        {
+          role: 'system',
+          content: systemPrompt
         },
-      });
+        {
+          role: 'user',
+          content: question
+        }
+      ],
+      model: 'gpt-4o',
+      max_tokens: 1024,
+      temperature: 0.9
+    };
 
-      const result = await chat.sendMessage(`${systemPrompt}\n\nQuestion: ${question}`);
-    const response = result.response;
-    const text = response.text();
+    const response = await fetch('https://cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'x-rapidapi-host': 'cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com',
+        'x-rapidapi-key': process.env.RAPIDAPI_KEY || '',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `API request failed with status ${response.status}`);
+    }
+
+    const result = await response.json();
+    const text = result.choices?.[0]?.message?.content || 'No response generated';
 
     return NextResponse.json({ 
       answer: text,
@@ -54,21 +69,21 @@ Instructions: Provide a detailed, data-driven answer in 2-4 paragraphs. Include 
     });
 
   } catch (error: unknown) {
-    console.error('Gemini API error:', error);
+    console.error('RapidAPI error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
     if (errorMessage.includes('quota') || errorMessage.includes('429')) {
       return NextResponse.json({ 
-        error: 'API quota exceeded. Please wait ~30 seconds or upgrade your Gemini API plan.',
-        details: 'Visit https://ai.google.dev/pricing to increase quota.'
+        error: 'API quota exceeded. Please check your RapidAPI subscription.',
+        details: 'Visit your RapidAPI dashboard to manage your quota.'
       }, { status: 429 });
     }
     
-    if (errorMessage.includes('404') || errorMessage.includes('not found')) {
+    if (errorMessage.includes('401') || errorMessage.includes('403')) {
       return NextResponse.json({ 
-        error: 'Model not available. Please check your API key permissions.',
+        error: 'Invalid API key. Please check your RapidAPI credentials.',
         details: errorMessage
-      }, { status: 404 });
+      }, { status: 401 });
     }
     
     return NextResponse.json({ 
