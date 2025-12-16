@@ -388,11 +388,11 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
       <motion.aside
         initial={{ x: -280 }}
         animate={{ x: mobileOpen ? 0 : 0 }}
-        className={cn(
-          "h-screen bg-black border-r border-white/10 flex flex-col fixed lg:sticky top-0 left-0 z-40 w-64 transition-transform",
-          !mobileOpen && "max-lg:-translate-x-full"
-        )}
-      >
+          className={cn(
+            "h-screen bg-black border-r border-white/10 flex flex-col fixed lg:sticky top-0 left-0 z-40 w-56 sm:w-64 transition-transform",
+            !mobileOpen && "max-lg:-translate-x-full"
+          )}
+        >
           <div className="p-3 sm:p-4 border-b border-white/10">
             <div className="flex items-center gap-2 sm:gap-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded bg-red-600 flex items-center justify-center flex-shrink-0">
